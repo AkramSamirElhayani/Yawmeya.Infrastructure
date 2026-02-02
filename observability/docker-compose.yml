@@ -17,16 +17,6 @@ volumes:
   loki_data:
   tempo_data:
 
-configs:
-  prometheus_config:
-    file: ./prometheus/prometheus.yml
-  loki_config:
-    file: ./loki/loki-config.yml
-  tempo_config:
-    file: ./tempo/tempo-config.yml
-  otel_config:
-    file: ./otel-collector/otel-collector-config.yml
-
 services:
   # =============================================================================
   # GRAFANA - Visualization & Dashboards
@@ -81,9 +71,7 @@ services:
       - "--web.enable-remote-write-receiver"
     volumes:
       - prometheus_data:/prometheus
-    configs:
-      - source: prometheus_config
-        target: /etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - observability
 
@@ -99,9 +87,7 @@ services:
     command: -config.file=/etc/loki/loki-config.yml
     volumes:
       - loki_data:/loki
-    configs:
-      - source: loki_config
-        target: /etc/loki/loki-config.yml
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
     networks:
       - observability
 
@@ -119,9 +105,7 @@ services:
     command: ["-config.file=/etc/tempo/tempo-config.yml"]
     volumes:
       - tempo_data:/var/tempo
-    configs:
-      - source: tempo_config
-        target: /etc/tempo/tempo-config.yml
+      - ./tempo/tempo-config.yml:/etc/tempo/tempo-config.yml:ro
     networks:
       - observability
 
@@ -138,9 +122,8 @@ services:
       - "8888"   # Prometheus metrics exposed by the collector
       - "8889"   # Prometheus exporter metrics
     command: ["--config=/etc/otelcol/otel-collector-config.yml"]
-    configs:
-      - source: otel_config
-        target: /etc/otelcol/otel-collector-config.yml
+    volumes:
+      - ./otel-collector/otel-collector-config.yml:/etc/otelcol/otel-collector-config.yml:ro
     networks:
       - observability
     depends_on:

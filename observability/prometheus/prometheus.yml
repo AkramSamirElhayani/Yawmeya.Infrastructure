@@ -1,0 +1,82 @@
+# Prometheus Configuration for Yawmeya Observability Stack
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'yawmeya-monitor'
+
+scrape_configs:
+  # =============================================================================
+  # Prometheus Self-Monitoring
+  # =============================================================================
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+
+  # =============================================================================
+  # Node Exporter - VPS/Host Metrics
+  # =============================================================================
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          service: 'node-exporter'
+
+  # =============================================================================
+  # cAdvisor - Container Metrics
+  # =============================================================================
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          service: 'cadvisor'
+
+  # =============================================================================
+  # OpenTelemetry Collector Metrics
+  # =============================================================================
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: ['otel-collector:8888']
+        labels:
+          service: 'otel-collector'
+
+  # =============================================================================
+  # .NET Application Metrics (via OTEL Collector)
+  # The OTEL Collector exposes application metrics on port 8889
+  # =============================================================================
+  - job_name: 'otel-collector-metrics'
+    static_configs:
+      - targets: ['otel-collector:8889']
+        labels:
+          service: 'dotnet-apps'
+
+  # =============================================================================
+  # Loki Metrics
+  # =============================================================================
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']
+        labels:
+          service: 'loki'
+
+  # =============================================================================
+  # Tempo Metrics
+  # =============================================================================
+  - job_name: 'tempo'
+    static_configs:
+      - targets: ['tempo:3200']
+        labels:
+          service: 'tempo'
+
+  # =============================================================================
+  # Grafana Metrics
+  # =============================================================================
+  - job_name: 'grafana'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['grafana:3000']
+        labels:
+          service: 'grafana'

@@ -1,0 +1,83 @@
+# Tempo Configuration for Yawmeya Observability Stack
+# Based on: https://grafana.com/docs/tempo/latest/metrics-from-traces/metrics-queries/configure-traceql-metrics/
+
+server:
+  http_listen_port: 3200
+  grpc_listen_port: 9095
+  log_level: info
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+
+ingester:
+  max_block_duration: 5m
+
+compactor:
+  compaction:
+    block_retention: 744h  # 31 days
+
+storage:
+  trace:
+    backend: local
+    wal:
+      path: /var/tempo/wal
+    local:
+      path: /var/tempo/blocks
+
+# Metrics generator configuration
+# Docs: https://grafana.com/docs/tempo/latest/configuration/#metrics-generator
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+      cluster: yawmeya
+  storage:
+    path: /var/tempo/generator/wal
+    remote_write:
+      - url: http://prometheus:9090/api/v1/write
+        send_exemplars: true
+  # Required for local-blocks processor
+  traces_storage:
+    path: /var/tempo/generator/traces
+  processor:
+    service_graphs:
+      max_items: 10000
+    span_metrics:
+      dimensions:
+        - http.method
+        - http.status_code
+      enable_target_info: true
+    local_blocks:
+      max_live_traces: 10000
+      max_block_duration: 1m
+      flush_check_period: 10s
+      complete_block_timeout: 1h
+      filter_server_spans: false
+
+# Global overrides - enable metrics generator processors for all tenants
+# Docs: https://grafana.com/docs/tempo/latest/metrics-from-traces/metrics-queries/configure-traceql-metrics/
+overrides:
+  metrics_generator_processors:
+    - service-graphs
+    - span-metrics
+    - local-blocks
+
+query_frontend:
+  search:
+    duration_slo: 5s
+    throughput_bytes_slo: 1.073741824e+09
+  trace_by_id:
+    duration_slo: 5s
+  metrics:
+    query_backend_after: 5m
+    concurrent_jobs: 8
+    target_bytes_per_job: 1.25e+09
+
+usage_report:
+  reporting_enabled: false

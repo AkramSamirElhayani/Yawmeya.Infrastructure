@@ -1,0 +1,2 @@
+FROM grafana/tempo:2.10.0
+COPY tempo/tempo-config.yml /etc/tempo/tempo-config.yml

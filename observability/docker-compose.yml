@@ -58,7 +58,9 @@ services:
   # PROMETHEUS - Metrics Collection
   # =============================================================================
   prometheus:
-    image: prom/prometheus:v3.9.1
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus
     container_name: prometheus
     restart: unless-stopped
     expose:
@@ -71,7 +73,6 @@ services:
       - "--web.enable-remote-write-receiver"
     volumes:
       - prometheus_data:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - observability
 
@@ -79,7 +80,9 @@ services:
   # LOKI - Log Aggregation
   # =============================================================================
   loki:
-    image: grafana/loki:3.6.0
+    build:
+      context: .
+      dockerfile: Dockerfile.loki
     container_name: loki
     restart: unless-stopped
     expose:
@@ -87,7 +90,6 @@ services:
     command: -config.file=/etc/loki/loki-config.yml
     volumes:
       - loki_data:/loki
-      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
     networks:
       - observability
 
@@ -95,7 +97,9 @@ services:
   # TEMPO - Distributed Tracing
   # =============================================================================
   tempo:
-    image: grafana/tempo:2.10.0
+    build:
+      context: .
+      dockerfile: Dockerfile.tempo
     container_name: tempo
     restart: unless-stopped
     expose:
@@ -105,7 +109,6 @@ services:
     command: ["-config.file=/etc/tempo/tempo-config.yml"]
     volumes:
       - tempo_data:/var/tempo
-      - ./tempo/tempo-config.yml:/etc/tempo/tempo-config.yml:ro
     networks:
       - observability
 
@@ -113,7 +116,9 @@ services:
   # OTEL COLLECTOR - OpenTelemetry Data Collection
   # =============================================================================
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.144.0
+    build:
+      context: .
+      dockerfile: Dockerfile.otel
     container_name: otel-collector
     restart: unless-stopped
     expose:
@@ -122,8 +127,6 @@ services:
       - "8888"   # Prometheus metrics exposed by the collector
       - "8889"   # Prometheus exporter metrics
     command: ["--config=/etc/otelcol/otel-collector-config.yml"]
-    volumes:
-      - ./otel-collector/otel-collector-config.yml:/etc/otelcol/otel-collector-config.yml:ro
     networks:
       - observability
     depends_on:

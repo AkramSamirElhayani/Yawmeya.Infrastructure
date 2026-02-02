@@ -1,2 +1,5 @@
 FROM prom/prometheus:v3.9.1
+USER root
+RUN mkdir -p /prometheus && chown -R 65534:65534 /prometheus
+USER 65534
 COPY prometheus/prometheus.yml /etc/prometheus/prometheus.yml

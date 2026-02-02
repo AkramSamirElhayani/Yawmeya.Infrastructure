@@ -1,2 +1,6 @@
 FROM grafana/loki:3.6.0
+USER root
+RUN mkdir -p /loki/chunks /loki/rules /loki/tsdb-index /loki/tsdb-cache /loki/compactor /loki/rules-temp && \
+    chown -R 10001:10001 /loki
+USER 10001
 COPY loki/loki-config.yml /etc/loki/loki-config.yml

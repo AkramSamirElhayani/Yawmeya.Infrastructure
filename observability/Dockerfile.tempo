@@ -1,5 +1,2 @@
 FROM grafana/tempo:2.10.0
-USER root
-RUN mkdir -p /var/tempo && chown -R 10001:10001 /var/tempo
-USER 10001
 COPY tempo/tempo-config.yml /etc/tempo/tempo-config.yml

@@ -41,9 +41,9 @@ services:
       # Enable Explore drill-down menus for Traces and Metrics
       - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor,metricsSummary,traceToMetrics,correlations,traceqlEditor,tempoSearch,tempoBackendSearch,tempoApmTable
       # Coolify environment variables (required for reverse proxy)
-      - SERVICE_URL_GRAFANA_3000=${GRAFANA_URL:-https://grafana.yawmeya.com:3000}
-      - COOLIFY_FQDN=${GRAFANA_DOMAIN:-grafana.yawmeya.com}
-      - COOLIFY_URL=${GRAFANA_URL:-https://grafana.yawmeya.com}
+      - SERVICE_URL_GRAFANA_3000=${SERVICE_URL_GRAFANA_3000}
+      - COOLIFY_FQDN=${COOLIFY_FQDN}
+      - COOLIFY_URL=${COOLIFY_URL}
     volumes:
       - grafana_data:/var/lib/grafana
     networks:

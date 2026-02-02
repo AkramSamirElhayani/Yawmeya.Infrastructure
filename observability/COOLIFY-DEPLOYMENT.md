@@ -42,17 +42,25 @@ Coolify often restricts these for security. The service is configured with `rest
 3. Set the compose file path: `observability/docker-compose.yml`
 4. Set base directory: `observability`
 
-### 2. Environment Variables (Optional)
+### 2. Environment Variables
 Set these in Coolify's environment section:
 
+#### Required (for Coolify reverse proxy):
+```env
+SERVICE_URL_GRAFANA_3000=https://grafana.yourdomain.com:3000
+COOLIFY_FQDN=grafana.yourdomain.com
+COOLIFY_URL=https://grafana.yourdomain.com
+```
+
+#### Optional (Grafana configuration):
 ```env
 GRAFANA_ADMIN_USER=admin
 GRAFANA_ADMIN_PASSWORD=<your-secure-password>
 GRAFANA_ANONYMOUS_ENABLED=false
 GRAFANA_ROOT_URL=https://grafana.yourdomain.com
-GRAFANA_DOMAIN=grafana.yourdomain.com
-GRAFANA_URL=https://grafana.yourdomain.com
 ```
+
+**Note**: Replace `yourdomain.com` with your actual domain for each deployment/server.
 
 ### 3. Deploy
 Click "Deploy" - Coolify will:

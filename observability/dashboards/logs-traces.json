@@ -16,13 +16,13 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "tempo", "uid": "tempo" },
+      "datasource": { "type": "tempo", "uid": "${tempo}" },
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 1 },
       "id": 2,
       "options": {},
       "targets": [
         {
-          "datasource": { "type": "tempo", "uid": "tempo" },
+          "datasource": { "type": "tempo", "uid": "${tempo}" },
           "limit": 20,
           "queryType": "traceqlSearch",
           "refId": "A",
@@ -41,7 +41,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "loki", "uid": "loki" },
+      "datasource": { "type": "loki", "uid": "${loki}" },
       "gridPos": { "h": 10, "w": 24, "x": 0, "y": 10 },
       "id": 4,
       "options": {
@@ -56,7 +56,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "loki", "uid": "loki" },
+          "datasource": { "type": "loki", "uid": "${loki}" },
           "expr": "{service_name=~\"yawmeya.*\"}",
           "refId": "A"
         }
@@ -73,7 +73,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "loki", "uid": "loki" },
+      "datasource": { "type": "loki", "uid": "${loki}" },
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 21 },
       "id": 6,
       "options": {
@@ -88,7 +88,7 @@
       },
       "targets": [
         {
-          "datasource": { "type": "loki", "uid": "loki" },
+          "datasource": { "type": "loki", "uid": "${loki}" },
           "expr": "{service_name=~\"yawmeya.*\"} |~ \"(?i)(error|exception|fail|critical)\"",
           "refId": "A"
         }
@@ -105,7 +105,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "loki", "uid": "loki" },
+      "datasource": { "type": "loki", "uid": "${loki}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -121,7 +121,7 @@
       "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         {
-          "datasource": { "type": "loki", "uid": "loki" },
+          "datasource": { "type": "loki", "uid": "${loki}" },
           "expr": "sum(count_over_time({service_name=~\"yawmeya.*\"}[1m])) by (service_name)",
           "legendFormat": "{{service_name}}",
           "refId": "A"
@@ -134,7 +134,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "tags": ["yawmeya", "logs", "traces"],
-  "templating": { "list": [] },
+  "templating": { "list": [{ "current": { "selected": false, "text": "Tempo", "value": "tempo" }, "hide": 0, "includeAll": false, "label": "Tempo", "multi": false, "name": "tempo", "options": [], "query": "tempo", "queryValue": "", "refresh": 1, "regex": "", "skipUrlSync": false, "type": "datasource" }, { "current": { "selected": false, "text": "Loki", "value": "loki" }, "hide": 0, "includeAll": false, "label": "Loki", "multi": false, "name": "loki", "options": [], "query": "loki", "queryValue": "", "refresh": 1, "regex": "", "skipUrlSync": false, "type": "datasource" }] },
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",

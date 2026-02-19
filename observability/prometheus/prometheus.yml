@@ -29,6 +29,8 @@ scrape_configs:
   # cAdvisor - Container Metrics
   # =============================================================================
   - job_name: 'cadvisor'
+    scrape_interval: 30s
+    scrape_timeout: 10s
     static_configs:
       - targets: ['cadvisor:8080']
         labels:

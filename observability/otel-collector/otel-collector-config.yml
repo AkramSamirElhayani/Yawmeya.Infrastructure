@@ -30,7 +30,6 @@ exporters:
   # Prometheus exporter for metrics
   prometheus:
     endpoint: "0.0.0.0:8889"
-    namespace: "yawmeya"
     resource_to_telemetry_conversion:
       enabled: true
 

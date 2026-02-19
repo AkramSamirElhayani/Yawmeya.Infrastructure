@@ -152,7 +152,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "sum(process_runtime_dotnet_exceptions_count_total{service_name=~\"yawmeya.*\"})",
+          "expr": "sum(dotnet_exceptions_total{service_name=~\"yawmeya.*\"})",
           "refId": "A"
         }
       ],
@@ -339,7 +339,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "process_working_set_bytes{service_name=~\"yawmeya.*\"}",
+          "expr": "dotnet_process_memory_working_set_bytes{service_name=~\"yawmeya.*\"}",
           "legendFormat": "{{service_name}}",
           "refId": "A"
         }
@@ -365,8 +365,8 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "rate(process_runtime_dotnet_gc_collections_count_total{service_name=~\"yawmeya.*\"}[5m])",
-          "legendFormat": "{{service_name}} Gen{{generation}}",
+          "expr": "rate(dotnet_gc_collections_total{service_name=~\"yawmeya.*\"}[5m])",
+          "legendFormat": "{{service_name}} {{dotnet_gc_heap_generation}}",
           "refId": "A"
         }
       ],
@@ -391,7 +391,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "process_runtime_dotnet_thread_pool_threads_count{service_name=~\"yawmeya.*\"}",
+          "expr": "dotnet_thread_pool_thread_count{service_name=~\"yawmeya.*\"}",
           "legendFormat": "{{service_name}}",
           "refId": "A"
         }
@@ -417,7 +417,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "rate(process_cpu_time_seconds_total{service_name=~\"yawmeya.*\"}[5m]) * 100",
+          "expr": "rate(dotnet_process_cpu_time_seconds_total{service_name=~\"yawmeya.*\"}[5m]) * 100",
           "legendFormat": "{{service_name}}",
           "refId": "A"
         }
@@ -443,7 +443,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "rate(process_runtime_dotnet_exceptions_count_total{service_name=~\"yawmeya.*\"}[5m])",
+          "expr": "rate(dotnet_exceptions_total{service_name=~\"yawmeya.*\"}[5m])",
           "legendFormat": "{{service_name}}",
           "refId": "A"
         }
@@ -469,8 +469,8 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "process_runtime_dotnet_gc_heap_size_bytes{service_name=~\"yawmeya.*\"}",
-          "legendFormat": "{{service_name}} Gen{{generation}}",
+          "expr": "dotnet_gc_last_collection_heap_size_bytes{service_name=~\"yawmeya.*\"}",
+          "legendFormat": "{{service_name}} {{dotnet_gc_heap_generation}}",
           "refId": "A"
         }
       ],

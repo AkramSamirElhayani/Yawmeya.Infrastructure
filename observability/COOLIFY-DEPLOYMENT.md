@@ -13,20 +13,6 @@ Coolify doesn't support Docker Compose `configs` or relative path bind mounts. A
 
 ### 2. Known Issues
 
-#### cAdvisor (Container Metrics)
-**Status**: May fail in Coolify (12x restarts)
-
-**Reason**: cAdvisor requires:
-- `privileged: true` mode
-- Access to `/dev/kmsg`
-- Docker socket access
-
-Coolify often restricts these for security. The service is configured with `restart: on-failure:3` to prevent infinite restart loops.
-
-**Impact**: You won't see container-level metrics (CPU/memory per container) in Grafana.
-
-**Solution**: This is optional. The rest of the stack works without it.
-
 #### Node Exporter (Host Metrics)
 **Status**: Should work, but may have limited metrics
 
@@ -88,7 +74,6 @@ In Coolify, verify these services are running:
 - ✅ tempo
 - ✅ otel-collector
 - ✅ node-exporter
-- ⚠️ cadvisor (may fail - this is OK)
 
 ## Troubleshooting
 
@@ -101,11 +86,7 @@ In Coolify, verify these services are running:
 3. Rebuild the service
 
 ### Service Keeps Restarting
-**Likely culprit**: cAdvisor
-
-**Check**: Look at service logs in Coolify
-- If it's cAdvisor: Safe to ignore, it's optional
-- If it's another service: Check the logs for errors
+**Check**: Look at service logs in Coolify for errors.
 
 ### Can't Access Grafana
 **Check**:

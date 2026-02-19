@@ -12,7 +12,6 @@ Complete observability solution for the Yawmeya application using the LGTM stack
 | **Tempo** | 3200, 4317, 4318 | Distributed tracing |
 | **OTEL Collector** | 4316 (gRPC), 4319 (HTTP) | OpenTelemetry data collection |
 | **Node Exporter** | 9100 | Host/VPS metrics |
-| **cAdvisor** | 8080 | Container metrics |
 
 ## Quick Start (Local Development)
 
@@ -78,9 +77,6 @@ Open http://localhost:3000 in your browser.
 ├─────────────────────────────────────────────────────────────────────┤
 │  Node Exporter ──────────────────────────────────────► Prometheus   │
 │  (Host metrics: CPU, Memory, Disk, Network)                         │
-│                                                                      │
-│  cAdvisor ───────────────────────────────────────────► Prometheus   │
-│  (Container metrics: CPU, Memory, Network, Disk I/O)                │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -93,14 +89,7 @@ Open http://localhost:3000 in your browser.
 - Network traffic
 - System load
 
-### 2. Docker Containers
-- Running container count
-- CPU usage by container
-- Memory usage by container
-- Network I/O by container
-- Disk I/O by container
-
-### 3. .NET Application Metrics
+### 2. .NET Application Metrics
 - Request rate by service
 - Request latency percentiles (P50, P95, P99)
 - Error rate (5xx responses)
@@ -108,7 +97,7 @@ Open http://localhost:3000 in your browser.
 - Thread pool statistics
 - Database connection pool
 
-### 4. Logs Explorer
+### 3. Logs Explorer
 - Log volume by level
 - Full-text log search
 - Filter by service and log level

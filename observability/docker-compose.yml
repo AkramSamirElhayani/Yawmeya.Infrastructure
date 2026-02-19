@@ -4,7 +4,6 @@
 # - Prometheus: Metrics collection
 # - Tempo: Distributed tracing
 # - OTEL Collector: OpenTelemetry data collection
-# - cAdvisor: Container metrics
 # - Node Exporter: Host/VPS metrics
 
 networks:
@@ -189,39 +188,3 @@ services:
     networks:
       - observability
 
-  # =============================================================================
-  # CADVISOR - Container Metrics
-  # NOTE: May not work in all environments (requires privileged mode)
-  # =============================================================================
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.51.0
-    container_name: cadvisor
-    restart: on-failure:3
-    expose:
-      - "8080"
-    privileged: true
-    devices:
-      - /dev/kmsg
-    command:
-      - "--housekeeping_interval=30s"
-      - "--max_housekeeping_interval=35s"
-      - "--event_storage_event_limit=default=0"
-      - "--event_storage_age_limit=default=0"
-      - "--disable_metrics=percpu,sched,tcp,udp,hugetlb,referenced_memory,cpu_topology,resctrl"
-      - "--store_container_labels=false"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: 256M
-        reservations:
-          cpus: "0.05"
-          memory: 64M
-    networks:
-      - observability
